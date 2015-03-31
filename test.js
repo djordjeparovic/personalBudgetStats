@@ -1,43 +1,18 @@
 var personalBudgetStats = require('./personalBudgetStats.js');
 
-// console.log("Sections:" + personalBudgetStats.returnSections());
+var troskovi = new personalBudgetStats('./data.json');
 
-// console.log("Adding 3 new sections...");
-// personalBudgetStats.addSection("Cigarete", "3000");
-// personalBudgetStats.addSection("Izlasci", "4000");
-// personalBudgetStats.addSection("Fiksni troskovi", "2400");
+console.log("Data in ./data.json:\n");
+console.log(troskovi.getSections());
+console.log(troskovi.getExpenses());
 
-// console.log("Sections: ");
-// console.log(personalBudgetStats.returnSections());
+console.log("Adding section {Software licences, 1000}...");
 
-// console.log("Adding new expense...");
-// console.log(
-// 	personalBudgetStats.addExpense("Izlasci", "Samo Pivo",(new Date()).toString(), "500"));
-// console.log("List last 5 expenses:");
-// console.log(personalBudgetStats.lastFewExpenses(4));
+troskovi.addSection("Software licences", "1000");
 
-// console.log("Sections:"); 
-// console.log(personalBudgetStats.returnSections());
+console.log("Printing sections...."); 
+console.log(troskovi.getSections());
 
-// // var sections = [
-// // 	{
-// // 		section: "Cigarete",
-// // 		maxAllowed: "3000",
-// // 		spentSoFar: "0"
-// // 	},
 
-// // 	{
-// // 		section: "Izlasci",
-// // 		maxAllowed: "4000",
-// // 		spentSoFar: "0"
-// // 	},
-
-// // 	{
-// // 		section: "Fiksni troskovi",
-// // 		maxAllowed: "2400",
-// // 		spentSoFar: "0"
-// // 	}
-// // ];
-// var k = personalBudgetStats.initializePersonalBudgetStateFromJSON('./data.json');
-// var i = personalBudgetStats.savePersonalBudgetStateToJSON('./newData.json');
-troskovi = new personalBudgetStats;
+console.log("Save edited data into newData.json file... "); 
+troskovi.savePersonalBudgetStateToJSON('./newData.json');

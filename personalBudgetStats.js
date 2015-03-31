@@ -1,25 +1,32 @@
+'use strict';
 var fs = require('fs');
 
-var personalBudgetStats = {
-	/* sections is array of objects 
-	{section:"", maxAllowed:"", spentSoFar:""} */
-	sections: [],
-	/* expenses is array of objects 
-	{section:"", name:"", date:"", spent:""}	*/
-	expenses: [],
-	creationDate: this.creationDate || (new Date()).toString(),
+/**
+*	Initializes <sections> and <expenses> arrays form 
+*	passed JSON object inside <jsonFile>
+*	@param { String } jsonFile (eg. './data.json')
+*/
+function personalBudgetStats(jsonFile){
+		try {
+			var data = require(jsonFile);
+			this.sections = data.sections;
+			this.expenses = data.expenses;
+		} catch(e) {
+			console.log("Cant read file " + jsonFile + "\n");
+		}
+}
 
-	/**
-	*	Adds new expense to list of expenses. Updates <spentSoFar> 
-	*	value in <sections> array. 
-	*	@param {String} section - The section in which function should
-	*	store new expense
-	*	@param {String} name - The name of expense
-	*	@param {String} spent - The amount of money spent on <name> in 
-	*	<section> section.
-	*	@return {Boolean} - Successfully updated <expenses> and <sections>. 
-	*/
-	addExpense: function(section, name, date, spent){
+/**
+*	Adds new expense to list of expenses. Updates <spentSoFar> 
+*	value in <sections> array. 
+*	@param {String} section - The section in which function should
+*	store new expense
+*	@param {String} name - The name of expense
+*	@param {String} spent - The amount of money spent on <name> in 
+*	<section> section.
+*	@return {Boolean} - Successfully updated <expenses> and <sections>. 
+*/
+personalBudgetStats.prototype.addExpense = function(section, name, date, spent){
 		this.expenses.push(
 			{
 				section: section,
@@ -38,37 +45,32 @@ var personalBudgetStats = {
 			};
 		};
 		return found;
-	},
+	};
 
-	/**
-	*	Return the last <value> expenses
-	*	@param { String } value - number of required expenses
-	*	@return { Array }
-	*/
-	lastFewExpenses: function(value){
-		if (value > this.expenses.length) {
-			return this.expenses;
-		} else {
-			/* TODO */
-		}
-	},
-
-	/**
-	*	Returns array of available sections
-	*	@return { Array } 
-	*/
-	returnSections: function(){
+/**
+*	Returns array of available sections
+*	@return { Array } 
+*/
+personalBudgetStats.prototype.getSections = function(){
 		return this.sections;
-	},
+	};
 
-	/**
-	*	Adds new section to <sections> array
-	*	@param { String } section - section name
- 	*	@param { String } maxAllowed - max allowed amout of money
-	*	planned to spent in current section
-	*	@return { Boolean } - Successfully added new section
-	*/
-	addSection: function(section, maxAllowed){
+/**
+*	Returns array of all expenses
+*	@return { Array } 
+*/
+personalBudgetStats.prototype.getExpenses = function(){
+		return this.expenses;
+	};	
+
+/**
+*	Adds new section to <sections> array
+*	@param { String } section - section name
+*	@param { String } maxAllowed - max allowed amout of money
+*	planned to spent in current section
+*	@return { Boolean } - Successfully added new section
+*/
+personalBudgetStats.prototype.addSection = function(section, maxAllowed){
 		/*TODO if incompatible types return false */
 		this.sections.push(
 			{
@@ -77,33 +79,15 @@ var personalBudgetStats = {
 				spentSoFar: "0"
 			});
 		return true;
-	},
+	};
 
-	/**
-	*	Initialize <sections> and <expenses> arrays form 
-	*	passed <json> object
-	*	@param { JSON } json 
-	*	@return { Boolean } - Successfully initialized state 
-	*	of personalBudget
-	*/
-	initializePersonalBudgetStateFromJSON: function(jsonFile){
-		try {
-			data = require(jsonFile);
-			this.sections = data.sections;
-			this.expenses = data.expenses;
-		} catch(e) {
-			return false;
-		}
-		return true;
-	},
-
-	/**
-	*	Saves current state of personalBudgetStats object  
-	*	to <jsonData> JSON file
-	*	@param { String } jsonFile - path to file (ex. './data.json') 
-	*	@return { Boolean } - Successfully saved state
-	*/
-	savePersonalBudgetStateToJSON: function(jsonFile){
+/**
+*	Saves current state of personalBudgetStats object  
+*	to <jsonData> JSON file
+*	@param { String } jsonFile - path to file (ex. './data.json') 
+*	@return { Boolean } - Successfully saved state
+*/
+personalBudgetStats.prototype.savePersonalBudgetStateToJSON = function(jsonFile){
 		var obj = {sections: this.sections,
 				   expenses: this.expenses };
 		var str = JSON.stringify(obj);
@@ -113,8 +97,9 @@ var personalBudgetStats = {
 			}	
 			return true;
 		});
-	}
+	};
 
-};
 
 module.exports = personalBudgetStats;
+
+// 	creationDate: this.creationDate || (new Date()).toString(),
